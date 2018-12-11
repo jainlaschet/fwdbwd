@@ -14,7 +14,130 @@
 #include <memory>
 #include <set>
 
+#include <unordered_set>
+#include <unordered_map>
+
 using namespace std;
+
+namespace helper_fn{
+  const int FLIPS = 0;
+  const int NOT_FLIPS = 1;
+  const int NOT_SURE = 2;
+  
+ 
+  int flips_val(FactProxy f1, FactProxy f2)
+  {
+    if(f1.get_variable() == f2.get_variable())
+    {
+      if(f1.get_value() != f2.get_value())
+        return FLIPS;
+      else
+        return NOT_FLIPS; 
+    }
+    else
+      return NOT_SURE;
+  }
+}
+
+namespace fwdbwd{
+
+  // now int is being used to index the operator
+  unordered_map<int, vector<int> > dependency_map;
+  unordered_map<int, vector<int> > inverse_map;
+  unordered_map<StateID, unordered_set<int> > forward_nodes;
+  unordered_map<int, bool> goal_ops;
+  unordered_map<int, unordered_map<VarProxy, bool> > flip_idx;
+
+  bool is_applicable(const GlobalState &state, const OperatorProxy op)
+  {
+    for(FactProxy precondition: op.get_preconditions())
+    {
+      if(state[precondition.get_variable().get_id()] != precondition.get_value())
+        return false;
+    }
+    return true;
+  }
+
+  // CHANGE: New function added, do check the functionality
+  bool flips_val(FactProxy f1, FactProxy f2)
+  {
+    if(f1.get_variable() == f2.get_variable())
+    {
+      if(f1.get_value() != f2.get_value())
+        return true;
+    }
+    return false;
+  }
+
+  // CHANGE: New function added, do check functionality
+  void generate_flip_idx(const TaskProxy task_proxy)
+  {
+    for(OperatorProxy op: task_proxy.get_operators())
+    {
+      for (FactProxy precondition: op.get_preconditions())
+      {
+        flip_idx[op.get_id()][precondition]
+      }
+    }
+  } 
+
+  // CHANGE: A bug was resolved in this function, do check again.
+  void generate_goal_ops(const TaskProxy task_proxy)
+  {
+    for(OperatorProxy op: task_proxy.get_operators())
+    {
+      bool flag = false;
+      for(FactProxy goal_fact : task_proxy.get_goals())
+      {
+        for(EffectProxy e: op.get_effects())
+        {
+          if(e.get_fact() == goal_fact)
+          {
+            for(FactProxy p: operator_proxy.get_preconditions())
+            {
+              flag = (flips_val(e.get_fact(), p))? true: false;
+              if(flag)
+                break;
+            }
+          }opts
+          if(flag)
+            break;
+        }
+        if(flag)
+          break;
+      }
+      goal_ops[op.get_id()] = flag;
+    }
+  }
+
+  bool are_dependent(EffectsProxy eff1, PreconditionsProxy pre1, PreconditionsProxy pre2)
+  {
+    // return true if there are some common facts else false
+    bool flag;
+    for(FactProxy p2: pre2)
+    {
+      flag = true;
+      for(EffectProxy e1: eff1)
+      {
+        if(p2.get_variable() == e1.get_fact().get_variable())
+        {
+          if(p2.get_value() == e1.get_fact().get_value())
+            return true;
+          else
+            flag = false;
+        }
+      }
+      /*
+      since FD minimalises the domains, it becomes vital to check it.
+      */
+      for(FactProxy p1: pre1)
+        if(p2 == p1)
+            return true;
+    }
+    return false;
+  }
+
+}
 
 namespace eager_search {
 EagerSearch::EagerSearch(const Options &opts)
