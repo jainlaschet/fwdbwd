@@ -1,0 +1,420 @@
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c2882/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c2882.dir/build.make CMakeFiles/cmTC_c2882.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_c2882.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_c2882.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_c2882
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c2882.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_c2882.dir/testCXXCompiler.cxx.o  -o cmTC_c2882 -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_c2882.dir/build.make:97: recipe for target 'cmTC_c2882' failed
+make[1]: *** [cmTC_c2882] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_c2882/fast' failed
+make: *** [cmTC_c2882/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4c33b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4c33b.dir/build.make CMakeFiles/cmTC_4c33b.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_4c33b.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_4c33b.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_4c33b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4c33b.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_4c33b.dir/testCXXCompiler.cxx.o  -o cmTC_4c33b -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_4c33b.dir/build.make:97: recipe for target 'cmTC_4c33b' failed
+make[1]: *** [cmTC_4c33b] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_4c33b/fast' failed
+make: *** [cmTC_4c33b/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_37fb5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_37fb5.dir/build.make CMakeFiles/cmTC_37fb5.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_37fb5.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_37fb5.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_37fb5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_37fb5.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_37fb5.dir/testCXXCompiler.cxx.o  -o cmTC_37fb5 -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_37fb5.dir/build.make:97: recipe for target 'cmTC_37fb5' failed
+make[1]: *** [cmTC_37fb5] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_37fb5/fast' failed
+make: *** [cmTC_37fb5/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1f0c3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1f0c3.dir/build.make CMakeFiles/cmTC_1f0c3.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_1f0c3.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_1f0c3.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_1f0c3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1f0c3.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_1f0c3.dir/testCXXCompiler.cxx.o  -o cmTC_1f0c3 -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_1f0c3.dir/build.make:97: recipe for target 'cmTC_1f0c3' failed
+make[1]: *** [cmTC_1f0c3] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_1f0c3/fast' failed
+make: *** [cmTC_1f0c3/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b8aa5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b8aa5.dir/build.make CMakeFiles/cmTC_b8aa5.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_b8aa5.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_b8aa5.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_b8aa5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b8aa5.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_b8aa5.dir/testCXXCompiler.cxx.o  -o cmTC_b8aa5 -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_b8aa5.dir/build.make:97: recipe for target 'cmTC_b8aa5' failed
+make[1]: *** [cmTC_b8aa5] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_b8aa5/fast' failed
+make: *** [cmTC_b8aa5/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_bb0d0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_bb0d0.dir/build.make CMakeFiles/cmTC_bb0d0.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_bb0d0.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_bb0d0.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_bb0d0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bb0d0.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_bb0d0.dir/testCXXCompiler.cxx.o  -o cmTC_bb0d0 -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_bb0d0.dir/build.make:97: recipe for target 'cmTC_bb0d0' failed
+make[1]: *** [cmTC_bb0d0] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_bb0d0/fast' failed
+make: *** [cmTC_bb0d0/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b6b72/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b6b72.dir/build.make CMakeFiles/cmTC_b6b72.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_b6b72.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_b6b72.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_b6b72
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b6b72.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_b6b72.dir/testCXXCompiler.cxx.o  -o cmTC_b6b72 -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_b6b72.dir/build.make:97: recipe for target 'cmTC_b6b72' failed
+make[1]: *** [cmTC_b6b72] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_b6b72/fast' failed
+make: *** [cmTC_b6b72/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ac352/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ac352.dir/build.make CMakeFiles/cmTC_ac352.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_ac352.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_ac352.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_ac352
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ac352.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_ac352.dir/testCXXCompiler.cxx.o  -o cmTC_ac352 -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_ac352.dir/build.make:97: recipe for target 'cmTC_ac352' failed
+make[1]: *** [cmTC_ac352] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ac352/fast' failed
+make: *** [cmTC_ac352/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a8132/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a8132.dir/build.make CMakeFiles/cmTC_a8132.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_a8132.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_a8132.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_a8132
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a8132.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_a8132.dir/testCXXCompiler.cxx.o  -o cmTC_a8132 -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_a8132.dir/build.make:97: recipe for target 'cmTC_a8132' failed
+make[1]: *** [cmTC_a8132] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_a8132/fast' failed
+make: *** [cmTC_a8132/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_879bf/fast"
+/usr/bin/make -f CMakeFiles/cmTC_879bf.dir/build.make CMakeFiles/cmTC_879bf.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_879bf.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_879bf.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_879bf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_879bf.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_879bf.dir/testCXXCompiler.cxx.o  -o cmTC_879bf -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_879bf.dir/build.make:97: recipe for target 'cmTC_879bf' failed
+make[1]: *** [cmTC_879bf] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_879bf/fast' failed
+make: *** [cmTC_879bf/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9fc4a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9fc4a.dir/build.make CMakeFiles/cmTC_9fc4a.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_9fc4a.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_9fc4a.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_9fc4a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9fc4a.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_9fc4a.dir/testCXXCompiler.cxx.o  -o cmTC_9fc4a -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_9fc4a.dir/build.make:97: recipe for target 'cmTC_9fc4a' failed
+make[1]: *** [cmTC_9fc4a] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_9fc4a/fast' failed
+make: *** [cmTC_9fc4a/fast] Error 2
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/g++ 
+Build flags: ;-m32
+Id flags: 
+
+The output was:
+1
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+
+
+Determining if the CXX compiler works failed with the following output:
+Change Dir: /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_546e3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_546e3.dir/build.make CMakeFiles/cmTC_546e3.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_546e3.dir/testCXXCompiler.cxx.o
+/usr/bin/g++     -m32    -o CMakeFiles/cmTC_546e3.dir/testCXXCompiler.cxx.o -c /users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_546e3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_546e3.dir/link.txt --verbose=1
+/usr/bin/g++    -m32     CMakeFiles/cmTC_546e3.dir/testCXXCompiler.cxx.o  -o cmTC_546e3 -rdynamic 
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.so when searching for -lstdc++
+/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-linux-gnu/5/libstdc++.a when searching for -lstdc++
+/usr/bin/ld: cannot find -lstdc++
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_546e3.dir/build.make:97: recipe for target 'cmTC_546e3' failed
+make[1]: *** [cmTC_546e3] Error 1
+make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/release32/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_546e3/fast' failed
+make: *** [cmTC_546e3/fast] Error 2
+
+
