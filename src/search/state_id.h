@@ -35,7 +35,23 @@ public:
     bool operator!=(const StateID &other) const {
         return !(*this == other);
     }
+
+    size_t hash() const {
+        return value;
+    }
 };
+
+
+std::ostream &operator<<(std::ostream &os, StateID id);
+
+namespace std {
+template<>
+struct hash<StateID> {
+    size_t operator()(StateID id) const {
+        return id.hash();
+    }
+};
+}
 
 
 #endif

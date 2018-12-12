@@ -739,3 +739,18 @@ make[1]: Leaving directory '/users/others/lashitj/Work/fast-downward/builds/rele
 
 Source file was:
 int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX11_FOUND succeeded with the following output:
+Change Dir: /users/others/lashitj/Work/fwdbwd/builds/release32/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b78f1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b78f1.dir/build.make CMakeFiles/cmTC_b78f1.dir/build
+make[1]: Entering directory '/users/others/lashitj/Work/fwdbwd/builds/release32/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_b78f1.dir/src.cxx.o
+/usr/bin/g++     -m32 -DCXX11_FOUND   -std=c++11 -o CMakeFiles/cmTC_b78f1.dir/src.cxx.o -c /users/others/lashitj/Work/fwdbwd/builds/release32/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_b78f1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b78f1.dir/link.txt --verbose=1
+/usr/bin/g++    -m32 -DCXX11_FOUND    CMakeFiles/cmTC_b78f1.dir/src.cxx.o  -o cmTC_b78f1 -rdynamic 
+make[1]: Leaving directory '/users/others/lashitj/Work/fwdbwd/builds/release32/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }

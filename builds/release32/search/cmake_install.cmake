@@ -1,4 +1,4 @@
-# Install script for directory: /users/others/lashitj/Work/fast-downward/src/search
+# Install script for directory: /users/others/lashitj/Work/fwdbwd/src/search
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

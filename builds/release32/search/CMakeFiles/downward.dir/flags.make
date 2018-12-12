@@ -6,5 +6,5 @@ CXX_FLAGS =  -m32 -std=c++11 -g -Wall -Wextra -pedantic -Wnon-virtual-dtor -Werr
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/users/others/lashitj/Work/fast-downward/src/search/ext 
+CXX_INCLUDES = -I/users/others/lashitj/Work/fwdbwd/src/search/ext 
 

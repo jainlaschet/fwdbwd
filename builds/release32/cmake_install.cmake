@@ -1,4 +1,4 @@
-# Install script for directory: /users/others/lashitj/Work/fast-downward/src
+# Install script for directory: /users/others/lashitj/Work/fwdbwd/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/users/others/lashitj/Work/fast-downward/builds/release32/search/cmake_install.cmake")
+  include("/users/others/lashitj/Work/fwdbwd/builds/release32/search/cmake_install.cmake")
 
 endif()
 
@@ -46,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/users/others/lashitj/Work/fast-downward/builds/release32/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/users/others/lashitj/Work/fwdbwd/builds/release32/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

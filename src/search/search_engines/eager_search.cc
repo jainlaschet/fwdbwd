@@ -19,26 +19,6 @@
 
 using namespace std;
 
-namespace helper_fn{
-  const int FLIPS = 0;
-  const int NOT_FLIPS = 1;
-  const int NOT_SURE = 2;
-  
- 
-  int flips_val(FactProxy f1, FactProxy f2)
-  {
-    if(f1.get_variable() == f2.get_variable())
-    {
-      if(f1.get_value() != f2.get_value())
-        return FLIPS;
-      else
-        return NOT_FLIPS; 
-    }
-    else
-      return NOT_SURE;
-  }
-}
-
 namespace fwdbwd{
 
   // now int is being used to index the operator
@@ -46,7 +26,7 @@ namespace fwdbwd{
   unordered_map<int, vector<int> > inverse_map;
   unordered_map<StateID, unordered_set<int> > forward_nodes;
   unordered_map<int, bool> goal_ops;
-  unordered_map<int, unordered_map<VarProxy, bool> > flip_idx;
+  unordered_map<int, unordered_map<int, pair<int, bool> > > op_data;
 
   bool is_applicable(const GlobalState &state, const OperatorProxy op)
   {
@@ -58,83 +38,104 @@ namespace fwdbwd{
     return true;
   }
 
-  // CHANGE: New function added, do check the functionality
-  bool flips_val(FactProxy f1, FactProxy f2)
-  {
-    if(f1.get_variable() == f2.get_variable())
-    {
-      if(f1.get_value() != f2.get_value())
-        return true;
-    }
-    return false;
-  }
-
   // CHANGE: New function added, do check functionality
-  void generate_flip_idx(const TaskProxy task_proxy)
+  // RECHECK: Vulnerable function, created in one go.
+  void generate_op_data(const TaskProxy task_proxy)
   {
     for(OperatorProxy op: task_proxy.get_operators())
     {
       for (FactProxy precondition: op.get_preconditions())
       {
-        flip_idx[op.get_id()][precondition]
+        op_data[op.get_id()][precondition.get_variable().get_id()].first = precondition.get_value();
+        op_data[op.get_id()][precondition.get_variable().get_id()].second = false;
+      }
+      for (EffectProxy eff: op.get_effects())
+      {
+        FactProxy f = eff.get_fact();
+        if(op_data[op.get_id()][f.get_variable().get_id()].first != f.get_value())
+          op_data[op.get_id()][f.get_variable().get_id()].second = true; 
       }
     }
-  } 
+  }
+
+  bool check_goal_op(const OperatorProxy op, const TaskProxy task_proxy)
+  {
+    for(FactProxy precondition: op.get_preconditions())
+    {
+      for(FactProxy goal_fact: task_proxy.get_goals()) 
+      {
+        bool flag1 = (precondition.get_variable() == goal_fact.get_variable());
+        bool flag2 = (precondition.get_value() != goal_fact.get_value());
+        bool flag3 = op_data[op.get_id()][precondition.get_variable().get_id()].second;
+        if(flag1 && flag2 && flag3)
+          return true;
+      }
+    }
+    return false;
+  }
 
   // CHANGE: A bug was resolved in this function, do check again.
   void generate_goal_ops(const TaskProxy task_proxy)
   {
     for(OperatorProxy op: task_proxy.get_operators())
+      goal_ops[op.get_id()] = check_goal_op(op, task_proxy);
+  }
+
+  bool is_dependent(OperatorProxy op1, OperatorProxy op2)
+  {
+    // return true op1 supplies some facts to op2
+
+    PreconditionsProxy pre1 = op1.get_preconditions();
+    PreconditionsProxy pre2 = op2.get_preconditions();
+
+    for(FactProxy p2: pre2)
     {
-      bool flag = false;
-      for(FactProxy goal_fact : task_proxy.get_goals())
+      for(FactProxy p1: pre1)
       {
-        for(EffectProxy e: op.get_effects())
+        if(p1.get_variable() == p2.get_variable())
         {
-          if(e.get_fact() == goal_fact)
+          if(p1.get_value() != p2.get_value())
           {
-            for(FactProxy p: operator_proxy.get_preconditions())
-            {
-              flag = (flips_val(e.get_fact(), p))? true: false;
-              if(flag)
-                break;
-            }
-          }opts
-          if(flag)
-            break;
+            if(op_data[op1.get_id()][p1.get_variable().get_id()].second)
+              return true;
+          }
+          else
+          {
+            if(!op_data[op1.get_id()][p1.get_variable().get_id()].second)
+              return true;
+          }
         }
-        if(flag)
-          break;
       }
-      goal_ops[op.get_id()] = flag;
+    }
+    return false;
+  }
+
+  void generate_dependency_graph(const TaskProxy task_proxy)
+  {
+    OperatorsProxy operators = task_proxy.get_operators();
+      
+    for (OperatorProxy op1 : operators)
+    {
+      for(OperatorProxy op2 : operators)
+      {
+          if(op1 != op2)
+          {
+              if(is_dependent(op1, op2))
+              {
+                  dependency_map[op1.get_id()].push_back(op2.get_id());
+                  inverse_map[op2.get_id()].push_back(op1.get_id());
+              }
+          }
+      }
     }
   }
 
-  bool are_dependent(EffectsProxy eff1, PreconditionsProxy pre1, PreconditionsProxy pre2)
+  // Call all the functions here
+  void calculate(const TaskProxy task_proxy)
   {
-    // return true if there are some common facts else false
-    bool flag;
-    for(FactProxy p2: pre2)
-    {
-      flag = true;
-      for(EffectProxy e1: eff1)
-      {
-        if(p2.get_variable() == e1.get_fact().get_variable())
-        {
-          if(p2.get_value() == e1.get_fact().get_value())
-            return true;
-          else
-            flag = false;
-        }
-      }
-      /*
-      since FD minimalises the domains, it becomes vital to check it.
-      */
-      for(FactProxy p1: pre1)
-        if(p2 == p1)
-            return true;
-    }
-    return false;
+    generate_op_data(task_proxy);
+    generate_goal_ops(task_proxy);
+    generate_dependency_graph(task_proxy);
   }
 
 }
@@ -220,6 +221,8 @@ void EagerSearch::initialize() {
     print_initial_evaluator_values(eval_context);
 
     pruning_method->initialize(task);
+
+    fwdbwd::calculate(task_proxy);
 }
 
 void EagerSearch::print_checkpoint_line(int g) const {
