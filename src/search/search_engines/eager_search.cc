@@ -138,6 +138,17 @@ namespace fwdbwd{
     generate_dependency_graph(task_proxy);
   }
 
+  bool FwdbwdNode::operator<(const FwdbwdNode& rhs) const{
+    if(op_stack == NULL && rhs.get_stack_pointer() == NULL)
+        return state_g_value < rhs.get_g();
+
+    else if(op_stack != NULL && rhs.get_stack_pointer() != NULL)
+        return op_stack->get_depth() < rhs.get_stack_pointer()->get_depth();
+        
+    else
+        return (op_stack == NULL)? true: false;
+    }
+
 }
 
 namespace eager_search {

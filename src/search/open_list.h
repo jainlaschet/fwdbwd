@@ -127,12 +127,14 @@ public:
 };
 
 
+
 using StateOpenListEntry = StateID;
 using EdgeOpenListEntry = std::pair<StateID, OperatorID>;
+using FwdbwdOpenListEntry = fwdbwd::FwdbwdNode;
 
 using StateOpenList = OpenList<StateOpenListEntry>;
 using EdgeOpenList = OpenList<EdgeOpenListEntry>;
-
+using FwdbwdOpenList = OpenList<FwdbwdOpenListEntry>;
 
 template<class Entry>
 OpenList<Entry>::OpenList(bool only_preferred)

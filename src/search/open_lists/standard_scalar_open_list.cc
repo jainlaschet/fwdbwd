@@ -4,12 +4,14 @@
 #include "../open_list.h"
 #include "../option_parser.h"
 #include "../plugin.h"
+#include "../operator_id.h"
 
 #include "../utils/memory.h"
 
 #include <cassert>
 #include <deque>
 #include <map>
+#include <set>
 
 using namespace std;
 
@@ -17,8 +19,11 @@ namespace standard_scalar_open_list {
 template<class Entry>
 class StandardScalarOpenList : public OpenList<Entry> {
     typedef deque<Entry> Bucket;
+    typedef multiset<fwdbwd::FwdbwdNode> fwdbwdBucket;
+    typedef fwdbwdBucket::iterator fwdbwdBucket_it;
 
     map<int, Bucket> buckets;
+    map<int, fwdbwdBucket> fwdbwd_buckets;
     int size;
 
     shared_ptr<Evaluator> evaluator;
@@ -110,6 +115,41 @@ bool StandardScalarOpenList<Entry>::is_reliable_dead_end(
     return is_dead_end(eval_context) && evaluator->dead_ends_are_reliable();
 }
 
+// specialised functions
+
+template<>
+void StandardScalarOpenList<fwdbwd::FwdbwdNode>::do_insertion(
+    EvaluationContext &eval_context, const fwdbwd::FwdbwdNode &entry) {
+    int key = eval_context.get_evaluator_value(evaluator.get());
+    if(entry.get_stack_pointer() != NULL)
+        key += entry.get_stack_pointer()->get_cost();
+    fwdbwd_buckets[key].insert(entry);
+    ++size;
+}
+
+template<>
+fwdbwd::FwdbwdNode StandardScalarOpenList<fwdbwd::FwdbwdNode>::remove_min() {
+    assert(size > 0);
+    auto it = fwdbwd_buckets.begin();
+    assert(it != fwdbwd_buckets.end());
+    fwdbwdBucket &bucket = it->second;
+    assert(!bucket.empty());
+    fwdbwdBucket_it itr = bucket.begin();
+    fwdbwd::FwdbwdNode result = *itr;
+    bucket.erase(itr);
+    if (bucket.empty())
+        fwdbwd_buckets.erase(it);
+    --size;
+    return result;
+}
+
+template<>
+void StandardScalarOpenList<fwdbwd::FwdbwdNode>::clear() {
+    fwdbwd_buckets.clear();
+    size = 0;
+}
+
+
 StandardScalarOpenListFactory::StandardScalarOpenListFactory(
     const Options &options)
     : options(options) {
@@ -123,6 +163,11 @@ StandardScalarOpenListFactory::create_state_open_list() {
 unique_ptr<EdgeOpenList>
 StandardScalarOpenListFactory::create_edge_open_list() {
     return utils::make_unique_ptr<StandardScalarOpenList<EdgeOpenListEntry>>(options);
+}
+
+unique_ptr<FwdbwdOpenList>
+StandardScalarOpenListFactory::create_fwdbwd_open_list() {
+    return utils::make_unique_ptr<StandardScalarOpenList<FwdbwdOpenListEntry>>(options);
 }
 
 static shared_ptr<OpenListFactory> _parse(OptionParser &parser) {

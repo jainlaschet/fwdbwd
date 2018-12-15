@@ -2647,6 +2647,8 @@ standard_scalar_open_list.h
 /users/others/lashitj/Work/fwdbwd/src/search/option_parser.h
 ../plugin.h
 /users/others/lashitj/Work/fwdbwd/src/search/plugin.h
+../operator_id.h
+/users/others/lashitj/Work/fwdbwd/src/search/operator_id.h
 ../utils/memory.h
 /users/others/lashitj/Work/fwdbwd/src/search/utils/memory.h
 cassert
@@ -2654,6 +2656,8 @@ cassert
 deque
 -
 map
+-
+set
 -
 
 /users/others/lashitj/Work/fwdbwd/src/search/open_lists/standard_scalar_open_list.h
@@ -2867,6 +2871,16 @@ utils/hash.h
 /users/others/lashitj/Work/fwdbwd/src/search/utils/hash.h
 iostream
 -
+vector
+-
+unordered_set
+-
+unordered_map
+-
+utility
+-
+state_id.h
+/users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 
 /users/others/lashitj/Work/fwdbwd/src/search/option_parser.h
 options/command_line.h

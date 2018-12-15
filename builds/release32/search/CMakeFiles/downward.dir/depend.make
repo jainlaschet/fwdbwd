@@ -485,6 +485,7 @@ search/CMakeFiles/downward.dir/evaluation_context.cc.o: /users/others/lashitj/Wo
 search/CMakeFiles/downward.dir/evaluation_result.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/evaluation_result.cc
 search/CMakeFiles/downward.dir/evaluation_result.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/evaluation_result.h
 search/CMakeFiles/downward.dir/evaluation_result.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/operator_id.h
+search/CMakeFiles/downward.dir/evaluation_result.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 search/CMakeFiles/downward.dir/evaluation_result.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/hash.h
 
 search/CMakeFiles/downward.dir/evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/evaluation_result.h
@@ -501,6 +502,7 @@ search/CMakeFiles/downward.dir/evaluator.cc.o: /users/others/lashitj/Work/fwdbwd
 search/CMakeFiles/downward.dir/evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/options/registries.h
 search/CMakeFiles/downward.dir/evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/options/type_namer.h
 search/CMakeFiles/downward.dir/evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/plugin.h
+search/CMakeFiles/downward.dir/evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 search/CMakeFiles/downward.dir/evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/hash.h
 search/CMakeFiles/downward.dir/evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/language.h
 search/CMakeFiles/downward.dir/evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/memory.h
@@ -550,6 +552,7 @@ search/CMakeFiles/downward.dir/evaluators/const_evaluator.cc.o: /users/others/la
 search/CMakeFiles/downward.dir/evaluators/const_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/options/registries.h
 search/CMakeFiles/downward.dir/evaluators/const_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/options/type_namer.h
 search/CMakeFiles/downward.dir/evaluators/const_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/plugin.h
+search/CMakeFiles/downward.dir/evaluators/const_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 search/CMakeFiles/downward.dir/evaluators/const_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/hash.h
 search/CMakeFiles/downward.dir/evaluators/const_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/language.h
 search/CMakeFiles/downward.dir/evaluators/const_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/memory.h
@@ -612,6 +615,7 @@ search/CMakeFiles/downward.dir/evaluators/max_evaluator.cc.o: /users/others/lash
 search/CMakeFiles/downward.dir/evaluators/max_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/options/registries.h
 search/CMakeFiles/downward.dir/evaluators/max_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/options/type_namer.h
 search/CMakeFiles/downward.dir/evaluators/max_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/plugin.h
+search/CMakeFiles/downward.dir/evaluators/max_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 search/CMakeFiles/downward.dir/evaluators/max_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/hash.h
 search/CMakeFiles/downward.dir/evaluators/max_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/language.h
 search/CMakeFiles/downward.dir/evaluators/max_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/memory.h
@@ -691,6 +695,7 @@ search/CMakeFiles/downward.dir/evaluators/sum_evaluator.cc.o: /users/others/lash
 search/CMakeFiles/downward.dir/evaluators/sum_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/options/registries.h
 search/CMakeFiles/downward.dir/evaluators/sum_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/options/type_namer.h
 search/CMakeFiles/downward.dir/evaluators/sum_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/plugin.h
+search/CMakeFiles/downward.dir/evaluators/sum_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 search/CMakeFiles/downward.dir/evaluators/sum_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/hash.h
 search/CMakeFiles/downward.dir/evaluators/sum_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/language.h
 search/CMakeFiles/downward.dir/evaluators/sum_evaluator.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/memory.h
@@ -3032,6 +3037,7 @@ search/CMakeFiles/downward.dir/operator_counting/state_equation_constraints.cc.o
 
 search/CMakeFiles/downward.dir/operator_id.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/operator_id.cc
 search/CMakeFiles/downward.dir/operator_id.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/operator_id.h
+search/CMakeFiles/downward.dir/operator_id.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 search/CMakeFiles/downward.dir/operator_id.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/hash.h
 
 search/CMakeFiles/downward.dir/options/bounds.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/options/bounds.cc
@@ -5392,6 +5398,7 @@ search/CMakeFiles/downward.dir/tasks/cost_adapted_task.cc.o: /users/others/lashi
 search/CMakeFiles/downward.dir/tasks/delegating_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/abstract_task.h
 search/CMakeFiles/downward.dir/tasks/delegating_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/algorithms/subscriber.h
 search/CMakeFiles/downward.dir/tasks/delegating_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/operator_id.h
+search/CMakeFiles/downward.dir/tasks/delegating_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 search/CMakeFiles/downward.dir/tasks/delegating_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/delegating_task.cc
 search/CMakeFiles/downward.dir/tasks/delegating_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/delegating_task.h
 search/CMakeFiles/downward.dir/tasks/delegating_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/utils/hash.h
@@ -5399,6 +5406,7 @@ search/CMakeFiles/downward.dir/tasks/delegating_task.cc.o: /users/others/lashitj
 search/CMakeFiles/downward.dir/tasks/domain_abstracted_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/abstract_task.h
 search/CMakeFiles/downward.dir/tasks/domain_abstracted_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/algorithms/subscriber.h
 search/CMakeFiles/downward.dir/tasks/domain_abstracted_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/operator_id.h
+search/CMakeFiles/downward.dir/tasks/domain_abstracted_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 search/CMakeFiles/downward.dir/tasks/domain_abstracted_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/delegating_task.h
 search/CMakeFiles/downward.dir/tasks/domain_abstracted_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/domain_abstracted_task.cc
 search/CMakeFiles/downward.dir/tasks/domain_abstracted_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/domain_abstracted_task.h
@@ -5434,6 +5442,7 @@ search/CMakeFiles/downward.dir/tasks/domain_abstracted_task_factory.cc.o: /users
 search/CMakeFiles/downward.dir/tasks/modified_goals_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/abstract_task.h
 search/CMakeFiles/downward.dir/tasks/modified_goals_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/algorithms/subscriber.h
 search/CMakeFiles/downward.dir/tasks/modified_goals_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/operator_id.h
+search/CMakeFiles/downward.dir/tasks/modified_goals_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 search/CMakeFiles/downward.dir/tasks/modified_goals_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/delegating_task.h
 search/CMakeFiles/downward.dir/tasks/modified_goals_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/modified_goals_task.cc
 search/CMakeFiles/downward.dir/tasks/modified_goals_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/modified_goals_task.h
@@ -5442,6 +5451,7 @@ search/CMakeFiles/downward.dir/tasks/modified_goals_task.cc.o: /users/others/las
 search/CMakeFiles/downward.dir/tasks/modified_operator_costs_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/abstract_task.h
 search/CMakeFiles/downward.dir/tasks/modified_operator_costs_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/algorithms/subscriber.h
 search/CMakeFiles/downward.dir/tasks/modified_operator_costs_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/operator_id.h
+search/CMakeFiles/downward.dir/tasks/modified_operator_costs_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/state_id.h
 search/CMakeFiles/downward.dir/tasks/modified_operator_costs_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/delegating_task.h
 search/CMakeFiles/downward.dir/tasks/modified_operator_costs_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/modified_operator_costs_task.cc
 search/CMakeFiles/downward.dir/tasks/modified_operator_costs_task.cc.o: /users/others/lashitj/Work/fwdbwd/src/search/tasks/modified_operator_costs_task.h
