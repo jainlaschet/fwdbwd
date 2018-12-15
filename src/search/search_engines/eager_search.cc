@@ -21,12 +21,16 @@ using namespace std;
 
 namespace fwdbwd{
 
+  const int no_operator = -1;
+
   // now int is being used to index the operator
   unordered_map<int, vector<int> > dependency_map;
   unordered_map<int, vector<int> > inverse_map;
   unordered_map<StateID, unordered_set<int> > forward_nodes;
   unordered_map<int, bool> goal_ops;
   unordered_map<int, unordered_map<int, pair<int, bool> > > op_data;
+
+  OpStackNode* stack_root = new OpStackNode(no_operator, NULL);
 
   bool is_applicable(const GlobalState &state, const OperatorProxy op)
   {
@@ -248,6 +252,18 @@ void EagerSearch::print_statistics() const {
     pruning_method->print_statistics();
 }
 
+SearchStatus EagerSearch::step()
+{
+    pair<fwdbwd::FwdBwdNode, bool> n = fetch_next_node();
+    if(!n.second)
+        return FAILED;
+    fwdbwd::FwdbwdNode fwdbwd_node = n.first;
+    if(!fwdbwd_node.get_stack_pointer())
+      return forward_step(fwdbwd_node);
+    else
+      return backward_step(fwdbwd_node);
+}
+
 SearchStatus EagerSearch::step() {
     pair<SearchNode, bool> n = fetch_next_node();
     if (!n.second) {
@@ -369,6 +385,34 @@ SearchStatus EagerSearch::step() {
     return IN_PROGRESS;
 }
 
+SearchStatus EagerSearch::forward_step(fwdbwd::FwdbwdNode fwdbwd_node)
+{
+        // Get the search node from id
+    StateID id = fwdbwd_node.get_state();
+    GlobalState s = state_registry.lookup_state(id);
+    SearchNode node = search_space.get_node(s);
+
+    if (check_goal_and_set_plan(s))
+        return SOLVED;
+
+    pruning_method->prune_operators(s, applicable_ops);
+
+    // This evaluates the expanded state (again) to get preferred ops
+    EvaluationContext eval_context(s, node.get_g(), false, &statistics, true);
+    ordered_set::OrderedSet<OperatorID> preferred_operators;
+    for (const shared_ptr<Evaluator> &preferred_operator_evaluator : preferred_operator_evaluators) {
+        collect_preferred_operators(eval_context,
+                                    preferred_operator_evaluator.get(),
+                                    preferred_operators);
+    }
+
+    vector<fwdbwd::FwdbwdOps> fwdbwd_ops = generate_fwdbwd_ops(s, fwdbwd_node.get_operator());
+
+
+
+}
+
+
 pair<SearchNode, bool> EagerSearch::fetch_next_node() {
     /* TODO: The bulk of this code deals with multi-path dependence,
        which is a bit unfortunate since that is a special case that
@@ -476,4 +520,40 @@ void EagerSearch::update_f_value_statistics(const SearchNode &node) {
         statistics.report_f_value_progress(f_value);
     }
 }
+
+State EagerSearch::convert_global_state(const GlobalState &global_state) const {
+    State state(*tasks::g_root_task, global_state.get_values());
+    return task_proxy.convert_ancestor_state(state);
+}
+
+vector<fwdbwd::FwdbwdOps> EagerSearch::generate_fwdbwd_ops(GlobalState s, OperatorID op_id)
+{
+        vector<OperatorID> base_ops;
+        vector<fwdbwd::FwdbwdOps> fwdbwd_ops;
+
+        
+        if((op_id == OperatorID::no_operator) || fwdbwd::goal_fact_ops[op_id])
+        {
+            g_successor_generator->generate_applicable_ops(s, base_ops);
+            for(OperatorID id: base_ops)
+                fwdbwd_ops.push_back(make_pair(id, true));
+        }
+        else
+        {
+            base_ops = fwdbwd::inverse_map[op_id];
+            State state = convert_global_state(s);
+
+            for(OperatorID id: base_ops)
+            {
+                OperatorProxy op = task_proxy.get_operators()[id];
+                if(task_properties::is_applicable(op, state))
+                    fwdbwd_ops.push_back(make_pair(id, true));
+                else
+                    fwdbwd_ops.push_back(make_pair(id, false));
+            }
+        }
+
+        return fwdbwd_ops;
+}
+
 }
