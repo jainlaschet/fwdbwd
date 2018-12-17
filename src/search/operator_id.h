@@ -65,13 +65,22 @@ inline void feed(HashState &hash_state, OperatorID id) {
 }
 }
 
+namespace std {
+template<>
+struct hash<OperatorID> {
+    size_t operator()(OperatorID id) const {
+        return id.hash();
+    }
+};
+}
+
 class OpStackNode{
 
   // stores the value of the operator it represents
-  int op_id;
+  OperatorID op_id;
   
   OpStackNode* par;
-  std::unordered_map<int, OpStackNode*> children;
+  std::unordered_map<OperatorID, OpStackNode*> children;
 
   // represents stack size
   int depth;
@@ -82,31 +91,31 @@ class OpStackNode{
   std::unordered_set<StateID> state_storage;
 
 public:
-  OpStackNode(int operator_id, OpStackNode* parent, int op_cost=0);
+  OpStackNode(OperatorID operator_id, OpStackNode* parent, int op_cost=0);
 
-  int get_operator();
+  OperatorID get_operator();
   OpStackNode* get_parent();
   int get_depth();
   int get_cost();
 
   /* generates child, pair.second is false if state already requested here */
-  std::pair<OpStackNode*, bool> gen_child(int operator_id, StateID state_id, int op_cost);
+  std::pair<OpStackNode*, bool> gen_child(OperatorID operator_id, StateID state_id, int op_cost);
 
   // returns false if the state if already there, else true
   bool store_state(StateID state_id);
 };
 
 namespace fwdbwd{
-    using FwdbwdOps = std::pair<int, bool>;
+    using FwdbwdOps = std::pair<OperatorID, bool>;
     class FwdbwdNode{
         StateID id;
-        int op_id;
+        OperatorID op_id;
         OpStackNode* op_stack;
         int state_g_value;
     public:
-        FwdbwdNode(StateID state_id, int operator_id, OpStackNode* op_stack_node, int g_value);
+        FwdbwdNode(StateID state_id, OperatorID operator_id, OpStackNode* op_stack_node, int g_value);
         StateID get_state() const {return id;}
-        int get_operator() const {return op_id;}
+        OperatorID get_operator() const {return op_id;}
         OpStackNode* get_stack_pointer() const {return op_stack;}
         int get_g() const{return state_g_value;}
 

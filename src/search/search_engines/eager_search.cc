@@ -8,11 +8,14 @@
 
 #include "../algorithms/ordered_set.h"
 #include "../task_utils/successor_generator.h"
+#include "../task_utils/task_properties.h"
+#include "../tasks/root_task.h"
 
 #include <cassert>
 #include <cstdlib>
 #include <memory>
 #include <set>
+#include <map>
 
 #include <unordered_set>
 #include <unordered_map>
@@ -21,136 +24,142 @@ using namespace std;
 
 namespace fwdbwd{
 
-  const int no_operator = -1;
+    unordered_map<OperatorID, vector<OperatorID> > dependency_map;
+    unordered_map<OperatorID, vector<OperatorID> > inverse_map;
+    unordered_map<StateID, unordered_set<OperatorID> > forward_nodes;
+    unordered_map<OperatorID, bool> goal_ops;
+    // the first int in the unordered map below tracks to the variable id
+    unordered_map<OperatorID, unordered_map<int, pair<int, bool> > > op_data;
 
-  // now int is being used to index the operator
-  unordered_map<int, vector<int> > dependency_map;
-  unordered_map<int, vector<int> > inverse_map;
-  unordered_map<StateID, unordered_set<int> > forward_nodes;
-  unordered_map<int, bool> goal_ops;
-  unordered_map<int, unordered_map<int, pair<int, bool> > > op_data;
+    OpStackNode* stack_root = new OpStackNode(OperatorID::no_operator, NULL);
 
-  OpStackNode* stack_root = new OpStackNode(no_operator, NULL);
-
-  bool is_applicable(const GlobalState &state, const OperatorProxy op)
-  {
-    for(FactProxy precondition: op.get_preconditions())
+    bool is_applicable(const GlobalState &state, const OperatorProxy op)
     {
-      if(state[precondition.get_variable().get_id()] != precondition.get_value())
+        for(FactProxy precondition: op.get_preconditions())
+        {
+            if(state[precondition.get_variable().get_id()] != precondition.get_value())
+            return false;
+        }
+        return true;
+    }
+
+    // CHANGE: New function added, do check functionality
+    // RECHECK: Vulnerable function, created in one go.
+    void generate_op_data(const TaskProxy task_proxy)
+    {
+        for(OperatorProxy op: task_proxy.get_operators())
+        {
+            for (FactProxy precondition: op.get_preconditions())
+            {
+                op_data[OperatorID(op.get_id())][precondition.get_variable().get_id()].first = precondition.get_value();
+                op_data[OperatorID(op.get_id())][precondition.get_variable().get_id()].second = false;
+            }
+            for (EffectProxy eff: op.get_effects())
+            {
+                FactProxy f = eff.get_fact();
+                if(op_data[OperatorID(op.get_id())][f.get_variable().get_id()].first != f.get_value())
+                    op_data[OperatorID(op.get_id())][f.get_variable().get_id()].second = true; 
+            }
+        }
+    }
+
+    bool check_goal_op(const OperatorProxy op, const TaskProxy task_proxy)
+    {
+        for(FactProxy precondition: op.get_preconditions())
+        {
+            for(FactProxy goal_fact: task_proxy.get_goals()) 
+            {
+                bool flag1 = (precondition.get_variable() == goal_fact.get_variable());
+                bool flag2 = (precondition.get_value() != goal_fact.get_value());
+                bool flag3 = op_data[OperatorID(op.get_id())][precondition.get_variable().get_id()].second;
+                if(flag1 && flag2 && flag3)
+                    return true;
+            }
+        }
         return false;
     }
-    return true;
-  }
 
-  // CHANGE: New function added, do check functionality
-  // RECHECK: Vulnerable function, created in one go.
-  void generate_op_data(const TaskProxy task_proxy)
-  {
-    for(OperatorProxy op: task_proxy.get_operators())
+    // CHANGE: A bug was resolved in this function, do check again.
+    void generate_goal_ops(const TaskProxy task_proxy)
     {
-      for (FactProxy precondition: op.get_preconditions())
-      {
-        op_data[op.get_id()][precondition.get_variable().get_id()].first = precondition.get_value();
-        op_data[op.get_id()][precondition.get_variable().get_id()].second = false;
-      }
-      for (EffectProxy eff: op.get_effects())
-      {
-        FactProxy f = eff.get_fact();
-        if(op_data[op.get_id()][f.get_variable().get_id()].first != f.get_value())
-          op_data[op.get_id()][f.get_variable().get_id()].second = true; 
-      }
+        for(OperatorProxy op: task_proxy.get_operators())
+          goal_ops[OperatorID(op.get_id())] = check_goal_op(op, task_proxy);
     }
-  }
 
-  bool check_goal_op(const OperatorProxy op, const TaskProxy task_proxy)
-  {
-    for(FactProxy precondition: op.get_preconditions())
-    {
-      for(FactProxy goal_fact: task_proxy.get_goals()) 
-      {
-        bool flag1 = (precondition.get_variable() == goal_fact.get_variable());
-        bool flag2 = (precondition.get_value() != goal_fact.get_value());
-        bool flag3 = op_data[op.get_id()][precondition.get_variable().get_id()].second;
-        if(flag1 && flag2 && flag3)
-          return true;
-      }
-    }
-    return false;
-  }
+    bool is_dependent(OperatorProxy op1, OperatorProxy op2)
+    { 
+        // return true op1 supplies some facts to op2
 
-  // CHANGE: A bug was resolved in this function, do check again.
-  void generate_goal_ops(const TaskProxy task_proxy)
-  {
-    for(OperatorProxy op: task_proxy.get_operators())
-      goal_ops[op.get_id()] = check_goal_op(op, task_proxy);
-  }
+        PreconditionsProxy pre1 = op1.get_preconditions();
+        PreconditionsProxy pre2 = op2.get_preconditions();
 
-  bool is_dependent(OperatorProxy op1, OperatorProxy op2)
-  {
-    // return true op1 supplies some facts to op2
-
-    PreconditionsProxy pre1 = op1.get_preconditions();
-    PreconditionsProxy pre2 = op2.get_preconditions();
-
-    for(FactProxy p2: pre2)
-    {
-      for(FactProxy p1: pre1)
-      {
-        if(p1.get_variable() == p2.get_variable())
+        for(FactProxy p2: pre2)
         {
-          if(p1.get_value() != p2.get_value())
-          {
-            if(op_data[op1.get_id()][p1.get_variable().get_id()].second)
-              return true;
-          }
-          else
-          {
-            if(!op_data[op1.get_id()][p1.get_variable().get_id()].second)
-              return true;
-          }
+            for(FactProxy p1: pre1)
+            {
+                if(p1.get_variable() == p2.get_variable())
+                {
+                    if(p1.get_value() != p2.get_value())
+                    {
+                        if(op_data[OperatorID(op1.get_id())][p1.get_variable().get_id()].second)
+                            return true;
+                    }
+                    else
+                    {
+                        if(!op_data[OperatorID(op1.get_id())][p1.get_variable().get_id()].second)
+                            return true;
+                    }
+                }
+            }
         }
-      }
+        return false;
     }
-    return false;
-  }
 
-  void generate_dependency_graph(const TaskProxy task_proxy)
-  {
-    OperatorsProxy operators = task_proxy.get_operators();
-      
-    for (OperatorProxy op1 : operators)
+    void generate_dependency_graph(const TaskProxy task_proxy)
     {
-      for(OperatorProxy op2 : operators)
-      {
-          if(op1 != op2)
-          {
-              if(is_dependent(op1, op2))
-              {
-                  dependency_map[op1.get_id()].push_back(op2.get_id());
-                  inverse_map[op2.get_id()].push_back(op1.get_id());
-              }
-          }
-      }
+        OperatorsProxy operators = task_proxy.get_operators();
+      
+        for (OperatorProxy op1 : operators)
+        {
+            for(OperatorProxy op2 : operators)
+            {
+                if(op1 != op2)
+                {
+                    if(is_dependent(op1, op2))
+                    {
+                        dependency_map[OperatorID(op1.get_id())].push_back(OperatorID(op2.get_id()));
+                        inverse_map[OperatorID(op2.get_id())].push_back(OperatorID(op1.get_id()));
+                    }
+                }
+            }
+        }
     }
-  }
 
-  // Call all the functions here
-  void calculate(const TaskProxy task_proxy)
-  {
-    generate_op_data(task_proxy);
-    generate_goal_ops(task_proxy);
-    generate_dependency_graph(task_proxy);
-  }
+    // Call all the functions here
+    void calculate(const TaskProxy task_proxy)
+    {
+        generate_op_data(task_proxy);
+        generate_goal_ops(task_proxy);
+        generate_dependency_graph(task_proxy);
+    }
 
-  bool FwdbwdNode::operator<(const FwdbwdNode& rhs) const{
-    if(op_stack == NULL && rhs.get_stack_pointer() == NULL)
-        return state_g_value < rhs.get_g();
+    FwdbwdNode::FwdbwdNode(StateID state_id, OperatorID operator_id, OpStackNode* op_stack_node, int g_value):
+    id(state_id), op_id(operator_id)
+    {
+        op_stack = op_stack_node;
+        state_g_value = g_value;
+    }
 
-    else if(op_stack != NULL && rhs.get_stack_pointer() != NULL)
-        return op_stack->get_depth() < rhs.get_stack_pointer()->get_depth();
-        
-    else
-        return (op_stack == NULL)? true: false;
+    bool FwdbwdNode::operator<(const FwdbwdNode& rhs) const{
+    
+        if(op_stack == NULL && rhs.get_stack_pointer() == NULL)
+            return state_g_value < rhs.get_g();
+
+        else if(op_stack != NULL && rhs.get_stack_pointer() != NULL)
+            return op_stack->get_depth() < rhs.get_stack_pointer()->get_depth();
+    
+        else
+            return (op_stack == NULL)? true: false;
     }
 
 }
@@ -160,7 +169,7 @@ EagerSearch::EagerSearch(const Options &opts)
     : SearchEngine(opts),
       reopen_closed_nodes(opts.get<bool>("reopen_closed")),
       open_list(opts.get<shared_ptr<OpenListFactory>>("open")->
-                create_state_open_list()),
+                create_fwdbwd_open_list()),
       f_evaluator(opts.get<shared_ptr<Evaluator>>("f_eval", nullptr)),
       preferred_operator_evaluators(opts.get_list<shared_ptr<Evaluator>>("preferred")),
       lazy_evaluator(opts.get<shared_ptr<Evaluator>>("lazy_evaluator", nullptr)),
@@ -178,32 +187,16 @@ void EagerSearch::initialize() {
          << endl;
     assert(open_list);
 
+    // fwdbwd code
+    fwdbwd::calculate(task_proxy);
+    // fwdbwd code
+
+
     set<Evaluator *> evals;
     open_list->get_path_dependent_evaluators(evals);
 
-    /*
-      Collect path-dependent evaluators that are used for preferred operators
-      (in case they are not also used in the open list).
-    */
-    for (const shared_ptr<Evaluator> &evaluator : preferred_operator_evaluators) {
-        evaluator->get_path_dependent_evaluators(evals);
-    }
-
-    /*
-      Collect path-dependent evaluators that are used in the f_evaluator.
-      They are usually also used in the open list and will hence already be
-      included, but we want to be sure.
-    */
     if (f_evaluator) {
         f_evaluator->get_path_dependent_evaluators(evals);
-    }
-
-    /*
-      Collect path-dependent evaluators that are used in the lazy_evaluator
-      (in case they are not already included).
-    */
-    if (lazy_evaluator) {
-        lazy_evaluator->get_path_dependent_evaluators(evals);
     }
 
     path_dependent_evaluators.assign(evals.begin(), evals.end());
@@ -230,14 +223,12 @@ void EagerSearch::initialize() {
         SearchNode node = search_space.get_node(initial_state);
         node.open_initial();
 
-        open_list->insert(eval_context, initial_state.get_id());
+        fwdbwd::FwdbwdNode fwdbwd_node(initial_state.get_id(), OperatorID::no_operator, NULL, node.get_real_g());
+        open_list->insert(eval_context, fwdbwd_node);
     }
 
     print_initial_evaluator_values(eval_context);
 
-    pruning_method->initialize(task);
-
-    fwdbwd::calculate(task_proxy);
 }
 
 void EagerSearch::print_checkpoint_line(int g) const {
@@ -254,7 +245,7 @@ void EagerSearch::print_statistics() const {
 
 SearchStatus EagerSearch::step()
 {
-    pair<fwdbwd::FwdBwdNode, bool> n = fetch_next_node();
+    pair<fwdbwd::FwdbwdNode, bool> n = fetch_next_node();
     if(!n.second)
         return FAILED;
     fwdbwd::FwdbwdNode fwdbwd_node = n.first;
@@ -264,130 +255,9 @@ SearchStatus EagerSearch::step()
       return backward_step(fwdbwd_node);
 }
 
-SearchStatus EagerSearch::step() {
-    pair<SearchNode, bool> n = fetch_next_node();
-    if (!n.second) {
-        return FAILED;
-    }
-    SearchNode node = n.first;
-
-    GlobalState s = node.get_state();
-    if (check_goal_and_set_plan(s))
-        return SOLVED;
-
-    vector<OperatorID> applicable_ops;
-    successor_generator.generate_applicable_ops(s, applicable_ops);
-
-    /*
-      TODO: When preferred operators are in use, a preferred operator will be
-      considered by the preferred operator queues even when it is pruned.
-    */
-    pruning_method->prune_operators(s, applicable_ops);
-
-    // This evaluates the expanded state (again) to get preferred ops
-    EvaluationContext eval_context(s, node.get_g(), false, &statistics, true);
-    ordered_set::OrderedSet<OperatorID> preferred_operators;
-    for (const shared_ptr<Evaluator> &preferred_operator_evaluator : preferred_operator_evaluators) {
-        collect_preferred_operators(eval_context,
-                                    preferred_operator_evaluator.get(),
-                                    preferred_operators);
-    }
-
-    for (OperatorID op_id : applicable_ops) {
-        OperatorProxy op = task_proxy.get_operators()[op_id];
-        if ((node.get_real_g() + op.get_cost()) >= bound)
-            continue;
-
-        GlobalState succ_state = state_registry.get_successor_state(s, op);
-        statistics.inc_generated();
-        bool is_preferred = preferred_operators.contains(op_id);
-
-        SearchNode succ_node = search_space.get_node(succ_state);
-
-        for (Evaluator *evaluator : path_dependent_evaluators) {
-            evaluator->notify_state_transition(s, op_id, succ_state);
-        }
-
-        // Previously encountered dead end. Don't re-evaluate.
-        if (succ_node.is_dead_end())
-            continue;
-
-        if (succ_node.is_new()) {
-            // We have not seen this state before.
-            // Evaluate and create a new node.
-
-            // Careful: succ_node.get_g() is not available here yet,
-            // hence the stupid computation of succ_g.
-            // TODO: Make this less fragile.
-            int succ_g = node.get_g() + get_adjusted_cost(op);
-
-            EvaluationContext succ_eval_context(
-                succ_state, succ_g, is_preferred, &statistics);
-            statistics.inc_evaluated_states();
-
-            if (open_list->is_dead_end(succ_eval_context)) {
-                succ_node.mark_as_dead_end();
-                statistics.inc_dead_ends();
-                continue;
-            }
-            succ_node.open(node, op, get_adjusted_cost(op));
-
-            open_list->insert(succ_eval_context, succ_state.get_id());
-            if (search_progress.check_progress(succ_eval_context)) {
-                print_checkpoint_line(succ_node.get_g());
-                reward_progress();
-            }
-        } else if (succ_node.get_g() > node.get_g() + get_adjusted_cost(op)) {
-            // We found a new cheapest path to an open or closed state.
-            if (reopen_closed_nodes) {
-                if (succ_node.is_closed()) {
-                    /*
-                      TODO: It would be nice if we had a way to test
-                      that reopening is expected behaviour, i.e., exit
-                      with an error when this is something where
-                      reopening should not occur (e.g. A* with a
-                      consistent heuristic).
-                    */
-                    statistics.inc_reopened();
-                }
-                succ_node.reopen(node, op, get_adjusted_cost(op));
-
-                EvaluationContext succ_eval_context(
-                    succ_state, succ_node.get_g(), is_preferred, &statistics);
-
-                /*
-                  Note: our old code used to retrieve the h value from
-                  the search node here. Our new code recomputes it as
-                  necessary, thus avoiding the incredible ugliness of
-                  the old "set_evaluator_value" approach, which also
-                  did not generalize properly to settings with more
-                  than one evaluator.
-
-                  Reopening should not happen all that frequently, so
-                  the performance impact of this is hopefully not that
-                  large. In the medium term, we want the evaluators to
-                  remember evaluator values for states themselves if
-                  desired by the user, so that such recomputations
-                  will just involve a look-up by the Evaluator object
-                  rather than a recomputation of the evaluator value
-                  from scratch.
-                */
-                open_list->insert(succ_eval_context, succ_state.get_id());
-            } else {
-                // If we do not reopen closed nodes, we just update the parent pointers.
-                // Note that this could cause an incompatibility between
-                // the g-value and the actual path that is traced back.
-                succ_node.update_parent(node, op, get_adjusted_cost(op));
-            }
-        }
-    }
-
-    return IN_PROGRESS;
-}
-
 SearchStatus EagerSearch::forward_step(fwdbwd::FwdbwdNode fwdbwd_node)
 {
-        // Get the search node from id
+    // Get the search node from id
     StateID id = fwdbwd_node.get_state();
     GlobalState s = state_registry.lookup_state(id);
     SearchNode node = search_space.get_node(s);
@@ -395,98 +265,251 @@ SearchStatus EagerSearch::forward_step(fwdbwd::FwdbwdNode fwdbwd_node)
     if (check_goal_and_set_plan(s))
         return SOLVED;
 
-    pruning_method->prune_operators(s, applicable_ops);
-
-    // This evaluates the expanded state (again) to get preferred ops
+    vector<fwdbwd::FwdbwdOps> fwdbwd_ops = generate_fwdbwd_ops(s, fwdbwd_node.get_operator());
     EvaluationContext eval_context(s, node.get_g(), false, &statistics, true);
-    ordered_set::OrderedSet<OperatorID> preferred_operators;
-    for (const shared_ptr<Evaluator> &preferred_operator_evaluator : preferred_operator_evaluators) {
-        collect_preferred_operators(eval_context,
-                                    preferred_operator_evaluator.get(),
-                                    preferred_operators);
+
+
+    for (fwdbwd::FwdbwdOps fwdbwd_op: fwdbwd_ops) {
+
+        OperatorID op_id = fwdbwd_op.first;
+        OperatorProxy op = task_proxy.get_operators()[op_id];
+        if(fwdbwd_op.second)
+        {
+            if ((node.get_real_g() + op.get_cost()) >= bound)
+                continue;
+            GlobalState succ_state = state_registry.get_successor_state(s, op);
+            //FWDBWD: What do they consider when counting generated nodes? What if an old node is generated?
+            statistics.inc_generated();
+
+
+            SearchNode succ_node = search_space.get_node(succ_state);
+
+            // Previously encountered dead end. Don't re-evaluate.
+            if (succ_node.is_dead_end())
+                continue;
+
+            // Urgent: Check if repeated notifications cause error.
+            for (Evaluator *evaluator : path_dependent_evaluators) {
+                evaluator->notify_state_transition(s, op_id, succ_state);
+            }
+
+            if (succ_node.is_new()) {
+
+                int succ_g = node.get_g() + get_adjusted_cost(op);
+
+                EvaluationContext succ_eval_context(
+                    succ_state, succ_g, NULL, &statistics);
+                statistics.inc_evaluated_states();
+
+                if (open_list->is_dead_end(succ_eval_context)) {
+                    succ_node.mark_as_dead_end();
+                    statistics.inc_dead_ends(); 
+                    continue;
+                }
+                succ_node.open(node, op, get_adjusted_cost(op));
+
+                // succ_node.store_foward_operator(op_id);
+                fwdbwd::forward_nodes[succ_state.get_id()].insert(op_id);
+
+                fwdbwd::FwdbwdNode succ_fwdbwd_node(succ_state.get_id(), op_id, NULL, succ_node.get_real_g());
+                open_list->insert(eval_context, succ_fwdbwd_node);
+                if (search_progress.check_progress(eval_context)) {
+                    print_checkpoint_line(succ_node.get_g());
+                    reward_progress();
+                }
+            }
+            else{
+                if(succ_node.get_g() > node.get_g() + get_adjusted_cost(op))
+                    succ_node.update_parent(succ_node, op, get_adjusted_cost(op));
+                
+                // FWDBWD: Check if the same operator and state pair has not been seen before
+                // check if the state is reached via a new operator.
+                if(fwdbwd::forward_nodes[succ_state.get_id()].find(op_id) == fwdbwd::forward_nodes[succ_state.get_id()].end())
+                {
+                    fwdbwd::forward_nodes[succ_state.get_id()].insert(op_id);
+                    EvaluationContext eval_context(
+                        succ_state, succ_node.get_g(), NULL, &statistics);
+                    fwdbwd::FwdbwdNode succ_fwdbwd_node(succ_state.get_id(), op_id, NULL, succ_node.get_real_g());
+                    open_list->insert(eval_context, succ_fwdbwd_node);
+                }
+            }   
+        }
+        else
+        {
+            // push the current and all it's dependent ones on the stack
+            // also check if you've observed the same pair before
+
+            pair<OpStackNode*, bool> first_child = fwdbwd::stack_root->gen_child(op_id, id, op.get_cost());
+            if(first_child.second)
+            {
+                // careful op_id already in use
+                for (OperatorID oid: fwdbwd::dependency_map[op_id])
+                {
+                    OperatorProxy op2 = task_proxy.get_operators()[oid];
+                    pair<OpStackNode*, bool> second_child = (first_child.first)->gen_child(oid, id, op2.get_cost());
+                    if(second_child.second)
+                    {
+                        // Now push this backward into the open list
+                        fwdbwd::FwdbwdNode succ_fwdbwd_node(id, OperatorID::no_operator, second_child.first, node.get_real_g());
+                        open_list->insert(eval_context, succ_fwdbwd_node);
+                    }
+                }
+            }
+        }
     }
 
-    vector<fwdbwd::FwdbwdOps> fwdbwd_ops = generate_fwdbwd_ops(s, fwdbwd_node.get_operator());
-
+    return IN_PROGRESS;
 
 
 }
 
+SearchStatus EagerSearch::backward_step(fwdbwd::FwdbwdNode fwdbwd_node)
+{
+    OpStackNode* op_stack_node = fwdbwd_node.get_stack_pointer();
+    assert(op_stack_node != NULL);
 
-pair<SearchNode, bool> EagerSearch::fetch_next_node() {
-    /* TODO: The bulk of this code deals with multi-path dependence,
-       which is a bit unfortunate since that is a special case that
-       makes the common case look more complicated than it would need
-       to be. We could refactor this by implementing multi-path
-       dependence as a separate search algorithm that wraps the "usual"
-       search algorithm and adds the extra processing in the desired
-       places. I think this would lead to much cleaner code. */
+    StateID id = fwdbwd_node.get_state();
+    GlobalState s = state_registry.lookup_state(id);
+    SearchNode node = search_space.get_node(s);
 
+    OperatorID op_id = op_stack_node->get_operator();
+    OperatorProxy op = task_proxy.get_operators()[op_id];
+
+    EvaluationContext eval_context(s, node.get_g(), false, &statistics, true);
+    
+    if(task_properties::is_applicable(op, convert_global_state(s)))
+    {
+        /* Apply the top stack operator to the current state
+        and push the data entry into the new stack
+        if the current operator_stack_pointer is equal to stack_root
+        then stop the search */
+
+        if ((node.get_real_g() + op.get_cost()) >= bound)
+            return IN_PROGRESS;
+        GlobalState succ_state = state_registry.get_successor_state(s, op);
+        //FWDBWD: What do they consider when counting generated nodes? What if an old node is generated?
+        statistics.inc_generated();
+
+        SearchNode succ_node = search_space.get_node(succ_state);
+
+        if (succ_node.is_dead_end())
+            return IN_PROGRESS;
+
+        // update new path
+        for (Evaluator *evaluator : path_dependent_evaluators) {
+            evaluator->notify_state_transition(s, op_id, succ_state);
+        }
+
+        if (succ_node.is_new()) {
+
+            // OPTIMIZE: Can we do something about the goal states found here?
+
+            int succ_g = node.get_g() + get_adjusted_cost(op);
+            EvaluationContext eval_context(
+                succ_state, succ_g, NULL, &statistics);
+            statistics.inc_evaluated_states();
+
+            if (open_list->is_dead_end(eval_context)) {
+                succ_node.mark_as_dead_end();
+                statistics.inc_dead_ends();
+                return IN_PROGRESS;
+            }
+            succ_node.open(node, op, get_adjusted_cost(op));
+
+            OpStackNode* parent_op_stack_node = op_stack_node->get_parent();
+            parent_op_stack_node->store_state(succ_state.get_id());
+
+            if(parent_op_stack_node == fwdbwd::stack_root)
+            {
+                // cout << "VERY GOOD WARNING -- 1" << endl;
+                fwdbwd::forward_nodes[succ_state.get_id()].insert(op_id);
+                fwdbwd::FwdbwdNode succ_fwdbwd_node(succ_state.get_id(), op_id, NULL, succ_node.get_real_g());
+                open_list->insert(eval_context, succ_fwdbwd_node);
+            }
+            else
+            {
+                // cout << "GOOD WARNING -- 1" << endl;
+                fwdbwd::FwdbwdNode succ_fwdbwd_node(succ_state.get_id(), OperatorID::no_operator, parent_op_stack_node, succ_node.get_real_g());
+                open_list->insert(eval_context, succ_fwdbwd_node);
+            }
+            if (search_progress.check_progress(eval_context)) {
+                print_checkpoint_line(succ_node.get_g());
+                reward_progress();
+            }
+        }
+        else{
+            if(succ_node.get_g() > node.get_g() + get_adjusted_cost(op))
+                succ_node.update_parent(succ_node, op, get_adjusted_cost(op));
+            OpStackNode* parent_op_stack_node = op_stack_node->get_parent();
+            bool flag = parent_op_stack_node->store_state(succ_state.get_id());
+            if(flag)
+            {
+                EvaluationContext eval_context(
+                    succ_state, succ_node.get_g(), NULL, &statistics);
+                if(parent_op_stack_node == fwdbwd::stack_root)
+                {
+                    if(fwdbwd::forward_nodes[succ_state.get_id()].find(op_id) == fwdbwd::forward_nodes[succ_state.get_id()].end())
+                    {
+                        fwdbwd::forward_nodes[succ_state.get_id()].insert(op_id);
+                        fwdbwd::FwdbwdNode succ_fwdbwd_node(succ_state.get_id(), op_id, NULL, succ_node.get_real_g());
+                        open_list->insert(eval_context, succ_fwdbwd_node);
+                    }
+                }
+                else
+                {
+                    fwdbwd::FwdbwdNode succ_fwdbwd_node(succ_state.get_id(), OperatorID::no_operator, parent_op_stack_node, succ_node.get_real_g());
+                    open_list->insert(eval_context, succ_fwdbwd_node);
+                }
+            }
+        }
+    }
+    else
+    {
+        for (OperatorID oid : (fwdbwd::dependency_map[op_stack_node->get_operator()]))
+        {
+            OperatorProxy op = task_proxy.get_operators()[oid];
+            pair<OpStackNode*, bool> child = op_stack_node->gen_child(oid, id, op.get_cost());
+
+            if(child.second)
+            {
+                fwdbwd::FwdbwdNode succ_fwdbwd_node(id, OperatorID::no_operator, child.first, fwdbwd_node.get_g());
+                open_list->insert(eval_context, succ_fwdbwd_node);
+            }
+        }
+    }
+    return IN_PROGRESS;
+}
+
+pair<fwdbwd::FwdbwdNode, bool> EagerSearch::fetch_next_node() {
     while (true) {
         if (open_list->empty()) {
             cout << "Completely explored state space -- no solution!" << endl;
-            // HACK! HACK! we do this because SearchNode has no default/copy constructor
-            const GlobalState &initial_state = state_registry.get_initial_state();
-            SearchNode dummy_node = search_space.get_node(initial_state);
+            fwdbwd::FwdbwdNode dummy_node(StateID::no_state, OperatorID::no_operator, NULL, 0);
             return make_pair(dummy_node, false);
         }
-        StateID id = open_list->remove_min();
-        // TODO is there a way we can avoid creating the state here and then
-        //      recreate it outside of this function with node.get_state()?
-        //      One way would be to store GlobalState objects inside SearchNodes
-        //      instead of StateIDs
+        fwdbwd::FwdbwdNode fwdbwdNode = open_list->remove_min();
+
+        StateID id = fwdbwdNode.get_state();
         GlobalState s = state_registry.lookup_state(id);
         SearchNode node = search_space.get_node(s);
 
         if (node.is_closed())
             continue;
-
-        if (!lazy_evaluator)
-            assert(!node.is_dead_end());
-
-        if (lazy_evaluator) {
-            /*
-              With lazy evaluators (and only with these) we can have dead nodes
-              in the open list.
-
-              For example, consider a state s that is reached twice before it is expanded.
-              The first time we insert it into the open list, we compute a finite
-              heuristic value. The second time we insert it, the cached value is reused.
-
-              During first expansion, the heuristic value is recomputed and might become
-              infinite, for example because the reevaluation uses a stronger heuristic or
-              because the heuristic is path-dependent and we have accumulated more
-              information in the meantime. Then upon second expansion we have a dead-end
-              node which we must ignore.
-            */
-            if (node.is_dead_end())
-                continue;
-
-            if (lazy_evaluator->is_estimate_cached(s)) {
-                int old_h = lazy_evaluator->get_cached_estimate(s);
-                /*
-                  We can pass calculate_preferred=false here
-                  since preferred operators are computed when the state is expanded.
-                */
-                EvaluationContext eval_context(s, node.get_g(), false, &statistics);
-                int new_h = eval_context.get_evaluator_value_or_infinity(lazy_evaluator.get());
-                if (open_list->is_dead_end(eval_context)) {
-                    node.mark_as_dead_end();
-                    statistics.inc_dead_ends();
-                    continue;
-                }
-                if (new_h != old_h) {
-                    open_list->insert(eval_context, id);
-                    continue;
-                }
-            }
-        }
-
-        node.close();
+        // MUST:: Check the value of lazy_evaluator. Should be false.
         assert(!node.is_dead_end());
+        /* FWDBWD: Should it be updated for backwards node? 
+        We might be in a loop error or something
+        if EvaluationContext is considering f_value_statistics in
+        that sense.
+        */
         update_f_value_statistics(node);
+        /*
+        FWDBWD: Should this be counted as expanded? 
+        When reopen_closed_node was there, we did count it as expanded.
+        Look for how it effects search and stuff.
+        */
         statistics.inc_expanded();
-        return make_pair(node, true);
+        return make_pair(fwdbwdNode, true);
     }
 }
 
@@ -522,8 +545,7 @@ void EagerSearch::update_f_value_statistics(const SearchNode &node) {
 }
 
 State EagerSearch::convert_global_state(const GlobalState &global_state) const {
-    State state(*tasks::g_root_task, global_state.get_values());
-    return task_proxy.convert_ancestor_state(state);
+    return task_proxy.convert_ancestor_state(global_state.unpack());
 }
 
 vector<fwdbwd::FwdbwdOps> EagerSearch::generate_fwdbwd_ops(GlobalState s, OperatorID op_id)
@@ -532,9 +554,9 @@ vector<fwdbwd::FwdbwdOps> EagerSearch::generate_fwdbwd_ops(GlobalState s, Operat
         vector<fwdbwd::FwdbwdOps> fwdbwd_ops;
 
         
-        if((op_id == OperatorID::no_operator) || fwdbwd::goal_fact_ops[op_id])
+        if((op_id == OperatorID::no_operator) || fwdbwd::goal_ops[op_id])
         {
-            g_successor_generator->generate_applicable_ops(s, base_ops);
+            successor_generator.generate_applicable_ops(s, base_ops);
             for(OperatorID id: base_ops)
                 fwdbwd_ops.push_back(make_pair(id, true));
         }
